@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#fffaf3" />
+<title>우리 밥먹을래? 🍚</title>
+<style>
+:root{--pink:#ff8fb1;--dark:#5b4652;--soft:#fffaf5;--line:#f4dde6;--muted:#8e7885;--yellow:#ffe8a8;--mint:#d8f5ea;--lav:#ece3ff}
+*{box-sizing:border-box}
+html{min-height:100%}
+body{margin:0;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:32px 16px;background:
+radial-gradient(ellipse at 12% 10%,#ffe9ef 0,transparent 34%),
+radial-gradient(ellipse at 88% 14%,#fff2b9 0,transparent 28%),
+radial-gradient(ellipse at 85% 86%,#e9e4ff 0,transparent 34%),
+linear-gradient(135deg,#fffdf9,#fff9fb 48%,#f9f5ff);color:var(--dark);font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;overflow-x:hidden}
+body:before{content:'✨';position:fixed;top:7%;left:10%;font-size:26px;color:#f6b866;animation:float 4s ease-in-out infinite;pointer-events:none}
+body:after{content:'🍚';position:fixed;bottom:10%;right:8%;font-size:34px;animation:float 5s ease-in-out infinite reverse;pointer-events:none}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-13px) rotate(7deg)}}
+.shell{width:min(100%,480px);position:relative;z-index:1}
+.card{background:rgba(255,255,255,.92);border:1px solid #fff;border-radius:30px;box-shadow:0 20px 60px rgba(165,93,129,.11);padding:clamp(25px,7vw,45px);text-align:center;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;width:190px;height:190px;border-radius:100%;background:#fff4cf;right:-110px;top:-108px;pointer-events:none}
+.card::after{content:'';position:absolute;width:120px;height:120px;border-radius:100%;background:#f5ecff;left:-45px;bottom:-40px;pointer-events:none}
+.sticker{font-size:57px;line-height:1.1;margin:14px auto 20px;filter:drop-shadow(0 8px 9px rgba(236,176,123,.22))}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:2px;color:#ff789d;margin:0 0 15px}
+h1{font-size:clamp(25px,6.5vw,33px);line-height:1.42;letter-spacing:-1.1px;margin:0 0 15px;word-break:keep-all}
+p{line-height:1.8;color:var(--muted);font-size:14px;margin:0 0 24px;word-break:keep-all}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.button{border:0;padding:15px 20px;border-radius:16px;background:#f8f0f4;color:var(--dark);font-size:15px;font-weight:800;min-height:52px;cursor:pointer;transition:transform .2s,background .2s,box-shadow .2s;font-family:inherit}
+.button:hover{transform:translateY(-2px)}.button:active{transform:scale(.97)}
+.primary{background:linear-gradient(135deg,#ff9d7c,#ff7fa8);color:white;box-shadow:0 8px 20px rgba(255,139,172,.34)}
+.full{width:100%}
+.button:focus-visible,.food:focus-visible,input:focus-visible{outline:3px solid #b39de7;outline-offset:3px}
+.step{display:none;animation:pop .4s ease both}.step.active{display:block}@keyframes pop{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
+.field{text-align:left;margin:0 0 15px}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:8px}.field input{font-family:inherit;width:100%;border:1.5px solid var(--line);background:#fffefd;color:var(--dark);border-radius:14px;padding:14px 15px;font-size:16px;min-height:50px;outline:none}.field input:focus{border-color:var(--pink)}
+.foods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0 20px}.food{font:inherit;font-size:14px;cursor:pointer;background:#fffdfb;border:1.5px solid var(--line);padding:13px 8px;border-radius:14px;color:var(--dark);min-height:58px}.food.selected{background:#fff5c9;border-color:#ffbf5f;box-shadow:0 0 0 2px #ffeab7 inset;font-weight:800}.food span{margin-right:5px}
+.mini{font-size:11px;color:#b09aa4;margin-top:20px}.progress{display:flex;justify-content:center;gap:6px;margin-bottom:23px}.progress i{width:18px;height:5px;background:#f8e3ea;border-radius:9px}.progress i.on{background:#ff9c71}
+.receipt{background:linear-gradient(145deg,#fffdf7,#fff8fb);border:1.5px dashed #ffcd7c;border-radius:19px;padding:20px;text-align:left;margin:18px 0 20px}.receipt h2{font-size:17px;margin:0 0 13px;text-align:center}.receipt dl{margin:0}.receipt div{display:flex;gap:12px;border-top:1px solid #f7e8d0;padding:13px 0;align-items:flex-start}.receipt dt{width:58px;flex-shrink:0;color:#ae8396;font-size:13px;font-weight:700}.receipt dd{margin:0;font-size:14px;font-weight:800;word-break:break-word}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:10;background:#4f3448;color:white;border-radius:99px;padding:12px 18px;font-size:13px;display:none;box-shadow:0 8px 28px rgba(70,51,71,.25);white-space:nowrap}
+.confetti{position:fixed;top:-20px;width:9px;height:14px;border-radius:3px;z-index:5;pointer-events:none;animation:drop 2.2s linear forwards}@keyframes drop{to{transform:translateY(105vh) rotate(720deg);opacity:0}}
+@media(max-width:390px){.card{padding:25px 18px}.controls .button{padding:13px 15px}.receipt{padding:15px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+#rejectButton.dodging{position:fixed;z-index:30;box-shadow:0 12px 29px rgba(169,102,134,.32);border:2px solid #fff;white-space:nowrap;touch-action:none;animation:rejectWiggle .22s ease-out}
+.no-message{display:none;margin:14px auto 0;padding:10px 14px;max-width:max-content;border-radius:999px;background:#fff7cc;color:#da7a1e;font-size:14px;font-weight:900;box-shadow:0 5px 18px rgba(239,165,191,.16)}
+.no-message.show{display:block;animation:popMessage .28s ease-out both}
+@keyframes rejectWiggle{0%{scale:.86;rotate:-9deg}75%{scale:1.08;rotate:5deg}100%{scale:1;rotate:0deg}}
+@keyframes popMessage{from{opacity:0;transform:translateY(8px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+.badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:-4px;margin-bottom:18px}
+.badge{font-size:12px;padding:8px 11px;border-radius:999px;background:#fff6d8;color:#8a6a18;font-weight:800}
+</style>
+</head>
+<body>
+<main class="shell"><div class="card">
+<section id="intro" class="step active" aria-label="초대장">
+  <div class="sticker">🍱🐻</div><div class="eyebrow">TODAY'S LUNCH MISSION</div>
+  <h1 id="mainQuestion">우리 밥먹을래?</h1>
+  <p id="introText">같이 밥 먹고 싶은데, 혹시 시간 돼?</p>
+  <div class="badges"><span class="badge">🍙 맛있는 거</span><span class="badge">😋 수다 타임</span><span class="badge">🎉 부담 없이</span></div>
+  <div class="controls"><button class="button primary" onclick="go('yay');burst()">좋아! 밥 먹으러 가자 🍚</button><button class="button" id="rejectButton" type="button" aria-describedby="denyMessage">거절</button></div>
+  <div id="denyMessage" class="no-message" aria-live="polite" role="status">거절은 거절해 🍳</div>
+</section>
+<section id="yay" class="step" aria-label="초대 수락">
+  <div class="progress"><i class="on"></i><i></i><i></i></div><div class="sticker">🥳🍴</div>
+  <div class="eyebrow">MISSION ACCEPTED!</div><h1>오예! 성사됐다!</h1>
+  <p>좋아, 그럼 이제<br>우리의 밥 약속을 정해보자 😎</p>
+  <button class="button primary full" onclick="go('schedule')">날짜 정하러 가기 →</button>
+</section>
+<section id="schedule" class="step" aria-label="날짜와 시간">
+  <div class="progress"><i class="on"></i><i class="on"></i><i></i></div><div class="sticker">📅⏰</div>
+  <h1>언제 만날까?</h1><p>편한 날짜랑 시간을 골라줘.</p>
+  <div class="field"><label for="date">📅 만나는 날짜</label><input id="date" type="date" required></div>
+  <div class="field"><label for="time">⏰ 만나는 시간</label><input id="time" type="time" value="17:00" required></div>
+  <button class="button primary full" onclick="confirmSchedule()">오케이, 이때 보자! →</button>
+</section>
+<section id="menu" class="step" aria-label="음식 선택">
+  <div class="progress"><i class="on"></i><i class="on"></i><i class="on"></i></div><div class="sticker">🍔🍜</div>
+  <h1>메뉴는?</h1><p> 먹고 싶은 메뉴를 골라줘!</p>
+  <div class="foods" id="foods"></div>
+  <div class="field" id="customField" hidden><label for="customFood">직접 적어줘 ✏️</label><input id="customFood" maxlength="35" placeholder="먹고 싶은 음식"></div>
+  <button class="button primary full" onclick="finish()">밥 약속 확정하기 🍽️</button>
+</section>
+<section id="result" class="step" aria-label="완성된 약속 카드">
+  <div class="sticker">🎟️🍚</div><div class="eyebrow">MEAL PLAN COMPLETE</div><h1>밥 약속 확정!</h1>
+  <p>좋아, 이제 약속이 잡혔어.<br>맛있는 거 먹으러 가보자 😋</p>
+  <div class="receipt"><h2>🍴 MEAL TICKET</h2><dl><div><dt>📅 날짜</dt><dd id="outDate">-</dd></div><div><dt>⏰ 시간</dt><dd id="outTime">-</dd></div><div><dt>🍽️ 메뉴</dt><dd id="outFood">-</dd></div></dl></div>
+  <button class="button primary full" onclick="downloadCard()">📸 약속 카드 이미지 저장</button>
+  <div style="height:10px"></div><button class="button full" onclick="restart()">처음부터 다시하기 ↺</button>
+  <div class="mini">저장한 이미지를 상대방에게 보내면 끝! 🍀</div>
+</section>
+<script>
+const SETTINGS = {
+  question: '우리 서로 밥먹을래?',
+  intro: '같이 밥 먹고 싶은데, 혹시 시간 돼?',
+  foods: [['🍻','술'],['🌶️','매운거'],['🍲','전골'],['🍕','피자'],['🥩','고기'],['☕','카페'],['✏️','직접입력']]
+};
+const $=id=>document.getElementById(id);
+let selectedFood='',selectedDate='',selectedTime='';
+$('mainQuestion').innerHTML=SETTINGS.question;
+$('introText').innerHTML=SETTINGS.intro;
+function resetRejectButton(){
+  const b=$('rejectButton');
+  b.classList.remove('dodging');
+  b.style.left=''; b.style.top=''; b.style.display='';
+  $('intro').querySelector('.controls').appendChild(b);
+  $('denyMessage').classList.remove('show');
+}
+function go(id){
+  resetRejectButton();
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+let previousRejectSpot=null;
+function dodgeReject(event){
+  if(!$('intro').classList.contains('active')) return;
+  if(event && event.cancelable) event.preventDefault();
+  const b=$('rejectButton');
+  const note=$('denyMessage');
+  note.classList.remove('show');
+  void note.offsetWidth;
+  note.classList.add('show');
+  const rect=b.getBoundingClientRect();
+  const w=rect.width, h=rect.height;
+  const pad=12;
+  const maxX=Math.max(pad,window.innerWidth-w-pad);
+  const maxY=Math.max(pad,window.innerHeight-h-pad);
+  const yes=document.querySelector('#intro .primary').getBoundingClientRect();
+  const originX=event && typeof event.clientX==='number' ? event.clientX : rect.left+w/2;
+  const originY=event && typeof event.clientY==='number' ? event.clientY : rect.top+h/2;
+  const spots=[];
+  for(let i=0;i<35;i++){
+    const x=pad+Math.random()*Math.max(0,maxX-pad);
+    const y=pad+Math.random()*Math.max(0,maxY-pad);
+    const centerX=x+w/2, centerY=y+h/2;
+    const distance=Math.hypot(centerX-originX,centerY-originY);
+    const farFromYes=x+w < yes.left-12 || x > yes.right+12 || y+h < yes.top-12 || y > yes.bottom+12;
+    const farFromLast=!previousRejectSpot || Math.hypot(x-previousRejectSpot.x,y-previousRejectSpot.y)>110;
+    if(distance>Math.min(150,window.innerWidth*.32) && farFromYes && farFromLast) spots.push({x,y});
+  }
+  const pos=spots.length ? spots[Math.floor(Math.random()*spots.length)] : {
+    x:Math.min(maxX,Math.max(pad, originX<window.innerWidth/2?maxX:pad)),
+    y:Math.min(maxY,Math.max(pad, originY<window.innerHeight/2?maxY:pad))
+  };
+  previousRejectSpot=pos;
+  if (b.parentElement !== document.body) document.body.appendChild(b);
+  b.style.left=Math.round(pos.x)+'px';
+  b.style.top=Math.round(pos.y)+'px';
+  b.classList.remove('dodging');
+  void b.offsetWidth;
+  b.classList.add('dodging');
+}
+const rejectButton=$('rejectButton');
+rejectButton.addEventListener('pointerenter', e=>{ if(e.pointerType!=='touch') dodgeReject(e); });
+rejectButton.addEventListener('pointerdown', dodgeReject);
+rejectButton.addEventListener('touchstart', e=>{
+  const touch=e.touches[0];
+  dodgeReject({clientX:touch.clientX,clientY:touch.clientY,cancelable:true,preventDefault:()=>e.preventDefault()});
+}, {passive:false});
+rejectButton.addEventListener('click', dodgeReject);
+rejectButton.addEventListener('focus',()=>{ if(document.activeElement===rejectButton) dodgeReject(); });
+function toast(message){const t=$('toast');t.textContent=message;t.style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.style.display='none',2700)}
+const now=new Date(),pad=n=>String(n).padStart(2,'0');
+$('date').min=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+SETTINGS.foods.forEach(([emoji,name])=>{const b=document.createElement('button');b.type='button';b.className='food';b.innerHTML=`<span>${emoji}</span>${name}`;b.onclick=()=>{selectedFood=name;document.querySelectorAll('.food').forEach(e=>e.classList.toggle('selected',e===b));$('customField').hidden=name!=='직접입력'};$('foods').appendChild(b)});
+function confirmSchedule(){const date=$('date').value,time=$('time').value;if(!date||!time){toast('날짜와 시간을 모두 골라줘! 🌷');return}if(date<$('date').min){toast('오늘 이후의 날짜를 골라줘!');return}selectedDate=date;selectedTime=time;go('menu')}
+function finish(){let food=selectedFood==='직접입력'?$('customFood').value.trim():selectedFood;if(!food){toast('먹고 싶은 음식을 하나 골라줘! 🍓');return}selectedFood=food;const [y,m,d]=selectedDate.split('-');$('outDate').textContent=`${y}년 ${Number(m)}월 ${Number(d)}일`;$('outTime').textContent=selectedTime;$('outFood').textContent=selectedFood;go('result');burst()}
+function restart(){selectedFood='';selectedDate='';selectedTime='';$('date').value='';$('time').value='17:00';$('customFood').value='';$('customField').hidden=true;document.querySelectorAll('.food').forEach(e=>e.classList.remove('selected'));go('intro')}
+function burst(){if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<33;i++){const e=document.createElement('i');e.className='confetti';e.style.left=Math.random()*100+'vw';e.style.background=['#ff8fb1','#ffdc98','#c3b0f2','#a9e0d1'][i%4];e.style.animationDelay=Math.random()*.5+'s';e.style.animationDuration=1.5+Math.random()*1.2+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),3300)}}
+function downloadCard(){
+  const canvas=document.createElement('canvas'),scale=2;canvas.width=900*scale;canvas.height=1200*scale;const c=canvas.getContext('2d');c.scale(scale,scale);
+  const bg=c.createLinearGradient(0,0,900,1200);bg.addColorStop(0,'#fffaf0');bg.addColorStop(1,'#f3ecff');c.fillStyle=bg;c.fillRect(0,0,900,1200);
+  c.fillStyle='rgba(255,255,255,.92)';rounded(c,65,78,770,1042,48);c.fill();c.strokeStyle='#f8ddb2';c.lineWidth=3;c.stroke();
+  c.textAlign='center';c.fillStyle='#ff8d56';c.font='700 25px sans-serif';c.fillText('MEAL PLAN COMPLETE',450,215);
+  c.font='76px sans-serif';c.fillText('🍚',450,335);c.fillStyle='#57384e';c.font='700 55px "Malgun Gothic",sans-serif';c.fillText('밥 약속 확정!',450,435);
+  c.fillStyle='#94798a';c.font='28px "Malgun Gothic",sans-serif';c.fillText('이제 맛있는 거 먹으러 가자!',450,495);
+  c.fillStyle='#fffaf0';rounded(c,120,560,660,375,25);c.fill();c.strokeStyle='#ffd67b';c.stroke();
+  const rows=[['날짜',$('outDate').textContent],['시간',$('outTime').textContent],['메뉴',$('outFood').textContent]];
+  rows.forEach(([label,value],i)=>{const y=655+i*106;c.textAlign='left';c.fillStyle='#aa8194';c.font='700 27px "Malgun Gothic",sans-serif';c.fillText(label,160,y);c.fillStyle='#583b51';c.font='700 30px "Malgun Gothic",sans-serif';const max=540;while(c.measureText(value).width>max && value.length>2)value=value.slice(0,-2)+'…';c.fillText(value,290,y)});
+  c.textAlign='center';c.fillStyle='#ff8d56';c.font='27px "Malgun Gothic",sans-serif';c.fillText('meal ticket ready!',450,1025);
+  const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='밥-약속-확정.png';document.body.appendChild(a);a.click();a.remove();toast('이미지를 저장했어! 🍀')
+}
+function rounded(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath()}
+</script>
+</body>
+</html>
